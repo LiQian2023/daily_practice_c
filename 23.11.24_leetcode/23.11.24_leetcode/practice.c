@@ -48,7 +48,7 @@ bool isPowerOfTwo1(int n) {
 }
 //µİ¹éÇó½â
 bool isPowerOfTwo(int n) {
-	bool a = true;
+	/*bool a = true;
 	if ((n > 2) || (n <= 0))
 	{
 		if ((0 != n % 2) || (0 == n))
@@ -56,7 +56,15 @@ bool isPowerOfTwo(int n) {
 		a = isPowerOfTwo(n >>= 1);
 	}
 	if (n == 2 || n == 1 || a)
-		return true;
+		return true;*/
+	bool a = true;
+	if ((n > 2) || (n <= 0))
+	{
+		if ((0 != n % 2) || (0 == n))
+			return false;
+		a = isPowerOfTwo(n >>= 1);
+	}
+	return a;
 }
 int main()
 {
