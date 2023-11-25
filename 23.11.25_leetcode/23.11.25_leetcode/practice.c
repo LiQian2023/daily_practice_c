@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <math.h>
 //2023.11.25力扣刷题
 //3的幂——递归、数学——简单
 //给定一个整数，写一个函数来判断它是否是 3 的幂次方。如果是，返回 true ；否则，返回 false 。
@@ -35,8 +36,8 @@ bool isPowerOfThree1(int n) {
 	if (n == 1)
 		return true;
 }
-//判断3的阶乘
-bool isPowerOfThree(int n) {
+//判断3的阶乘——迭代求解
+bool isPowerOfThree2(int n) {
 	while ((n >= 2) || (n <= 0))
 	{
 		if ((0 != n % 3) || (0 == n))
@@ -46,6 +47,37 @@ bool isPowerOfThree(int n) {
 		n /= 3;
 	}
 	return true;
+}
+//判断3的阶乘——递归求解
+bool isPowerOfThree3(int n) {
+	bool a = true;
+	if ((n >= 2) || (n <= 0))
+	{
+		if ((0 != n % 3) || (0 == n))
+			return false;
+		a= isPowerOfThree3(n /= 3);
+	}
+	return a;
+}
+//判断3的阶乘——试除法
+bool isPowerOfThree4(int n) {
+	int a = pow(3, 19);
+	for (a; a > 0; a /= 3)
+	{
+		if (a == n)
+			return true;
+	}
+	return false;
+}
+//判断3的阶乘——枚举法
+bool isPowerOfThree(int n) {
+	int a[20] = { 1,3,9,27,81,243,729,2187,6561,19683,59049,177147,531441,1594323,4782969,14348907,43046721,129140163,387420489,1162261467 };
+	for (int i=0; i <20; i++)
+	{
+		if (a[i] == n)
+			return true;
+	}
+	return false;
 }
 int main()
 {
@@ -60,3 +92,4 @@ int main()
 //3——0011
 //9——1001
 //27——0001 1011
+//81——0101 0001
