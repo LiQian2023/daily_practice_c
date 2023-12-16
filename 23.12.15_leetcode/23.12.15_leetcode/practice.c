@@ -57,7 +57,7 @@ int countNegatives2(int** grid, int gridSize, int* gridColSize) {
 	return num;
 }
 //方法三：二分查找——使用二分查找找到第一个负数
-int countNegatives(int** grid, int gridSize, int* gridColSize) {
+int countNegatives3(int** grid, int gridSize, int* gridColSize) {
 	int num = 0;
 	for (int i = 0; i < gridSize; i++)
 	{
@@ -86,26 +86,69 @@ int countNegatives(int** grid, int gridSize, int* gridColSize) {
 	}
 	return num;
 }
-int main(){
-	int arr[100][100] = { 0 };
-	int m = 0, n = 0;
-	while (scanf("%d%d", &m, &n) == 2){
-		//二维数组赋值
-		for (int i = 0; i < m; i++)
-			for (int j = 0; j < n; j++)
-				scanf("%d", &arr[i][j]);
-		//指针数组
-		int* parr[100] = { 0 };
-		int size = 0;
-		//指针数组接收二维数组
-		for (int i = 0; i < m; i++)
-			parr[size++] = arr[i];
-		//指针数组传参，二级指针接收
-		int ret = countNegatives(parr, m, &n);
-		printf("%d\n", ret);
-	}
-	return 0;
-}
+//int main(){
+//	int arr[100][100] = { 0 };
+//	int m = 0, n = 0;
+//	while (scanf("%d%d", &m, &n) == 2){
+//		//二维数组赋值
+//		for (int i = 0; i < m; i++)
+//			for (int j = 0; j < n; j++)
+//				scanf("%d", &arr[i][j]);
+//		//指针数组
+//		int* parr[100] = { 0 };
+//		int size = 0;
+//		//指针数组接收二维数组
+//		for (int i = 0; i < m; i++)
+//			parr[size++] = arr[i];
+//		//指针数组传参，二级指针接收
+//		int ret = countNegatives(parr, m, &n);
+//		printf("%d\n", ret);
+//	}
+//	return 0;
+//}
+
+////方法四：二分查找优化
+//int countNegatives(int** grid, int gridSize, int* gridColSize) {
+//	int num = 0, l = 0, r = gridSize - 1, flag = -1;
+//	while (l <= r)
+//	{
+//		int mid = (l + r) / 2;
+//		if (gridColSize[mid] < 0)
+//		{
+//			flag = mid;
+//			r = mid - 1;
+//		}
+//		else
+//			l = mid + 1;
+//	}
+//	if (-1 != flag)
+//		num += gridSize - flag;
+//	return num;
+//}
+//int main() {
+//	int arr[100][100] = { 0 };
+//	int m = 0, n = 0;
+//	while (scanf("%d%d", &m, &n) == 2) {
+//		//二维数组赋值
+//		for (int i = 0; i < m; i++)
+//			for (int j = 0; j < n; j++)
+//				scanf("%d", &arr[i][j]);
+//		//指针数组
+//		int* parr[100] = { 0 };
+//		int size = 0;
+//		//指针数组接收二维数组
+//		for (int i = 0; i < m; i++)
+//			parr[size++] = arr[i];
+//		//指针数组传参，二级指针接收
+//		int ret = 0;
+//		for (int i = 0; i < n; i++)
+//		{
+//			ret += countNegatives(parr, n, parr[i]);
+//		}
+//		printf("%d\n", ret);
+//	}
+//	return 0;
+//}
 
 //void test(int** ppa, int rol, int* col)
 //{
@@ -123,3 +166,21 @@ int main(){
 //	test(parr, 2, &arr[0]);
 //	return 0;
 //}
+
+void test(int** ppa, int rol, int* pa)
+{
+	for (int i = 0; i < rol; i++)
+	{
+		printf("%d ", pa[i]);
+	}
+}
+int main()
+{
+	int arr[2][3] = { 1,2,3,4,5,6 };
+	int* pa[2] = { arr[0],arr[1] };
+	for (int i = 0; i < 2; i++)
+	{
+		test(pa, 6, pa[i]);
+	}
+	return 0;
+}
