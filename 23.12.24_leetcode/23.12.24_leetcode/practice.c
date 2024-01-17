@@ -1,6 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
 
 //2023.12.24力扣网刷题
 //加一——数学、数组——简单
@@ -23,16 +25,25 @@
 //0 <= digits[i] <= 9
 #include <assert.h>
 #include <stdlib.h>
-int* plusOne(int* digits, int digitsSize, int* returnSize) {
+#include <math.h>
+
+//法一：合并与拆分
+int* plusOne1(int* digits, int digitsSize, int* returnSize) {
 	assert(digits && returnSize);
-	int* ans = (int*)calloc(digitsSize, sizeof(int));
-	int sum = 0;
+	long long sum = 0;
 	for (int i = 0; i < digitsSize; i++)
-		sum += ans[i] * pow(10, digitsSize - 1 - i);
+		sum += digits[i] * pow(10, digitsSize - 1 - i);
 	sum += 1;
-	for (*returnSize = 0; sum > 0; (*returnSize)++)
+	long long a = sum;
+	for (*returnSize = 0; a > 0; a /= 10)
 	{
-		ans[*returnSize] = sum % 10;
+		*returnSize += 1;
+	}
+	int* ans = (int*)calloc(*returnSize, sizeof(int));
+
+	for (int i = 0; i < *returnSize; i++)
+	{
+		ans[i] = sum % 10;
 		sum /= 10;
 	}
 	int l = 0, r = *returnSize - 1;
@@ -42,6 +53,42 @@ int* plusOne(int* digits, int digitsSize, int* returnSize) {
 		ans[l] = ans[r];
 		ans[r] = tmp;
 		l++, r--;
+	}
+	return ans;
+}
+//法二：顺序表
+int* plusOne(int* digits, int digitsSize, int* returnSize) {
+	if ((!digits) && (!returnSize))
+		return NULL;
+	*returnSize = digitsSize;
+	int* ans = (int*)calloc(digitsSize, sizeof(int));
+	if (!ans)
+		return NULL;
+	digits[digitsSize - 1] += 1;
+	//创建顺序表
+	int i = 0, j = digitsSize - 1;
+	while (i < digitsSize) {
+		ans[i++] = digits[j--];
+	}
+	//进位
+	for (j = 0; j < i - 1; j++) {
+		if (ans[j] > 9) {
+			ans[j] %= 10;
+			ans[j + 1]++;
+		}
+	}
+	if (ans[j] > 9) {
+		ans = (int*)realloc(ans, sizeof(int) * (i + 1));
+		ans[j] %= 10;
+		ans[j + 1] = 1;
+		j++;
+	}
+	*returnSize = j + 1;
+	//翻转
+	for (i = 0, j; i < j; i++, j--) {
+		int tmp = ans[i];
+		ans[i] = ans[j];
+		ans[j] = tmp;
 	}
 	return ans;
 }
