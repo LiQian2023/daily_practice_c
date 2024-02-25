@@ -1,0 +1,40 @@
+#define _CRT_SECURE_NO_WARNINGS 1
+
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+
+
+//2024.02.25力扣网刷题
+//存在重复元素——数组、哈希表、排序——简单
+//给你一个整数数组 nums 。如果任一值在数组中出现 至少两次 ，返回 true ；如果数组中每个元素互不相同，返回 false 。
+//示例 1：
+//输入：nums = [1, 2, 3, 1]
+//输出：true
+//示例 2：
+//输入：nums = [1, 2, 3, 4]
+//输出：false
+//示例 3：
+//输入：nums = [1, 1, 1, 3, 3, 4, 3, 2, 4, 2]
+//输出：true
+//提示：
+//1 <= nums.length <= 10^5
+//- 109 <= nums[i] <= 10^9
+
+int cmp(const void* p1, const void* p2) {
+	return *(int*)p1 - *(int*)p2;
+}
+
+
+bool containsDuplicate(int* nums, int numsSize) {
+	if (numsSize == 1)
+		return false;
+	qsort(nums, numsSize, sizeof(int), cmp);
+	int l = 0, r = 1;
+	while (r < numsSize) {
+		if (nums[l] == nums[r])
+			return true;
+		l++, r++;
+	}
+	return false;
+}
