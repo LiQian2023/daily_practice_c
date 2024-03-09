@@ -25,12 +25,9 @@ int cmp(const void* p1, const void* p2) {
 
 int maximumProduct(int* nums, int numsSize) {
 	qsort(nums, numsSize, sizeof(int), cmp);
-	if (nums[numsSize - 1] >= 0 || nums[0] < 0)
-		return nums[0] * nums[1] * nums[2];
-	int count = 0;
-	for (int i = numsSize - 1; i >= 0 && nums[i] < 0; i--) {
-		count++;
-	}
-	int mul = nums[0] * nums[numsSize - 1];
-	return (mul * nums[1] >= mul * nums[numsSize - 2] ? mul * nums[1] : mul * nums[numsSize - 2]);
+	int mul1 = nums[0] * nums[1] * nums[2];
+	int mul2 = nums[0] * nums[numsSize - 1] * nums[1];
+	int mul3 = nums[0] * nums[numsSize - 1] * nums[numsSize - 2];
+	int max = (mul1 >= mul2 ? mul1 : mul2);
+	return (max >= mul3 ? max : mul3);
 }
