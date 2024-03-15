@@ -15,37 +15,18 @@
 //- 1000 <= a, b <= 1000
 
 int getSum(int a, int b) {
-	if (a >= 0 && b >= 0) {
-		while (a & b) {
-			int sum = (a & b) << 1;//进位信息
-			a ^= b;
-			b = sum;
-		}
-	}
-	else if (a >= 0 && b <= 0) {
-		b = -b;
-		while (a & b) {
-			int sum = (a & b) >> 1;//进位信息
-			a ^= b;
-			b = sum;
-		}
-	}
-	else if (a <= 0 && b >= 0) {
-		a = -a;
-		while (a & b) {
-			int sum = (a & b) >> 1;//进位信息
-			a ^= b;
-			b = sum;
-		}
-	}
-	else {
-		a = -a, b = -b;
-		while (a & b) {
-			int sum = (a & b) << 1;//进位信息
-			a ^= b;
-			b = sum;
-		}
-		a = -a;
+	while (b) {
+		int sum = (a & b) << 1;//进位信息
+		a ^= b;
+		b = sum;
 	}
 	return a;
+}
+
+int main() {
+	int a = 0, b = 0;
+	while (scanf("%d%d", &a, &b) == 2) {
+		printf("a + b = %d\n", getSum(a, b));
+	}
+	return 0;
 }
