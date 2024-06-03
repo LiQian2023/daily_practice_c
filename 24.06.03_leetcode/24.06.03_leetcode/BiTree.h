@@ -5,7 +5,6 @@
 #include <stdbool.h>
 #include <assert.h>
 
-
 struct TreeNode {
 	int val;
 	struct TreeNode* left;
