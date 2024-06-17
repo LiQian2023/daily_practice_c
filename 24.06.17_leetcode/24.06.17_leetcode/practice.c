@@ -29,7 +29,7 @@ int cmp(const void* p1, const void* p2) {
 	return *(int*)p1 - *(int*)p2;
 }
 
-int* intersect(int* nums1, int nums1Size, int* nums2, int nums2Size, int* returnSize) {
+int* intersect1(int* nums1, int nums1Size, int* nums2, int nums2Size, int* returnSize) {
 	qsort(nums1, nums1Size, sizeof(int), cmp);
 	qsort(nums2, nums2Size, sizeof(int), cmp);
 	int* ans = (int*)calloc(nums1Size, sizeof(int));
@@ -44,6 +44,24 @@ int* intersect(int* nums1, int nums1Size, int* nums2, int nums2Size, int* return
 			j++;
 		else if(nums1[j] > nums2[z])
 			z++;
+	}
+	*returnSize = i;
+	return ans;
+}
+
+int* intersect(int* nums1, int nums1Size, int* nums2, int nums2Size, int* returnSize) {
+	int tmp[1001] = { 0 };
+	int* ans = (int*)calloc(nums1Size, sizeof(int));
+	assert(ans);
+	int i = 0;
+	for (int j = 0; j < nums1Size; j++) {
+		tmp[nums1[j]]++;
+	}
+	for (int j = 0; j < nums2Size; j++) {
+		if (tmp[nums2[j]]) {
+			ans[i++] = nums2[j];
+			tmp[nums2[j]]--;
+		}
 	}
 	*returnSize = i;
 	return ans;
