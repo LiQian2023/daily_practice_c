@@ -49,6 +49,7 @@ int* intersect1(int* nums1, int nums1Size, int* nums2, int nums2Size, int* retur
 	return ans;
 }
 
+//方法二：计数
 int* intersect(int* nums1, int nums1Size, int* nums2, int nums2Size, int* returnSize) {
 	int tmp[1001] = { 0 };
 	int* ans = (int*)calloc(nums1Size, sizeof(int));
