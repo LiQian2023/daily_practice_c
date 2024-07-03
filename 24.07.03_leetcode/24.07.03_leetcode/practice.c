@@ -19,10 +19,10 @@
 //x 各个数位上的数字之和为 5 。23 不能被 5 整除。因此 23 不是哈沙德数，答案是 - 1 。
 //提示：
 //1 <= x <= 100
-
-int sumOfTheDigitsOfHarshadNumber(int x) {
-	int sum = 0;
-	for (int a = x; a; a /= 10)
-		sum += a % 10;
-	return x % sum ? -1 : sum;
-}
+//
+//int sumOfTheDigitsOfHarshadNumber(int x) {
+//	int sum = 0;
+//	for (int a = x; a; a /= 10)
+//		sum += a % 10;
+//	return x % sum ? -1 : sum;
+//}
