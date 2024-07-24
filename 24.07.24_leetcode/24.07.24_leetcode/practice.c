@@ -72,7 +72,7 @@ void ShellSort(int* a, int len) {
 	}
 }
 
-int findContentChildren(int* g, int gSize, int* s, int sSize) {
+int findContentChildren2(int* g, int gSize, int* s, int sSize) {
 	//排序
 	ShellSort(g, gSize);
 	ShellSort(s, sSize);
@@ -92,8 +92,8 @@ void Adjust_Down(int* a, int len, int parent) {
 	while (child < len) {
 		if (child + 1 < len && a[child] < a[child + 1])
 			child += 1;
-		if (a[parent] > a[child]) {
-			Swap(&a[child], &a[]);
+		if (a[parent] < a[child]) {
+			Swap(&a[child], &a[parent]);
 		}
 		parent = child;
 		child = parent * 2 + 1;
@@ -105,8 +105,27 @@ void HeapSort(int* a, int len) {
 		Adjust_Down(a, i, 0);
 	}
 }
-void Creat_
-
+void Creat_Large(int* a, int len) {
+	for (int i = len / 2; i >= 0; i--) {
+		Adjust_Down(a, len, i);
+	}
+}
+int findContentChildren(int* g, int gSize, int* s, int sSize) {
+	//建大堆
+	Creat_Large(g, gSize);
+	Creat_Large(s, sSize);
+	//排序
+	HeapSort(g, gSize);
+	HeapSort(s, sSize);
+	//计数
+	int ans = 0;
+	for (int i = 0; ans < gSize && i < sSize; i++) {
+		if (s[i] >= g[ans]) {
+			ans++;
+		}
+	}
+	return ans;
+}
 void test() {
 	srand(time(NULL));
 	int N = 10;
