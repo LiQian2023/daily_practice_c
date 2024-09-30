@@ -22,6 +22,7 @@
 //提示：
 //1 <= n <= 1690
 
+//方法一：模拟——超时
 bool isUgly(int n) {
 	while (n >= 2 && n % 2 == 0) {
 		n /= 2;
@@ -41,7 +42,7 @@ int nthUglyNumber(int n) {
 	int* num = (int*)calloc(n, sizeof(int));
 	assert(num);
 	int i = 0;
-	for (int x = 1; i < n; x++) {
+	for (int x = 1; x < INT_MAX && i < n; x++) {
 		if (isUgly(x))
 			num[i++] = x;
 	}

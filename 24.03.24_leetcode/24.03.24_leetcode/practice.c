@@ -25,7 +25,8 @@ void reverseString(char* s, int sSize) {
 	}
 }
 
-#if 0
+//2024.03.24力扣网刷题
+// 2024.完成解答并通过力扣所有测试用例
 //零钱兑换——广度优先搜索、数组、动态规划——中等
 //给你一个整数数组 coins ，表示不同面额的硬币；以及一个整数 amount ，表示总金额。
 //计算并返回可以凑成总金额所需的 最少的硬币个数 。如果没有任何一种硬币组合能组成总金额，返回 - 1 。
@@ -46,13 +47,26 @@ void reverseString(char* s, int sSize) {
 //0 <= amount <= 10^4
 
 int cmp(const void* p1, const void* p2) {
-	return *(int*)p2 - *(int*)p1;
+	return *(int*)p1 - *(int*)p2;
 }
 int coinChange(int* coins, int coinsSize, int amount) {
 	qsort(coins, coinsSize, sizeof(int), cmp);
 	if (amount == 0)
 		return 0;
 	int count = 0;
-	return -1;
+	int i = coinsSize - 1;
+	int tmp = amount;
+	while (tmp && i) {
+		if (tmp - coins[i] < 0)
+			i--;
+		else {
+			tmp -= coins[i];
+			count++;
+		}
+		if (tmp < 0) {
+
+		}
+	}
+	return !amount ? count : -1;
 }
-#endif
+
