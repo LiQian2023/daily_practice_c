@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <stdbool.h>
-
+#include <math.h>
 //2024.10.21力扣网刷题
 //最小差值 II——贪心、数组、数学、排序——中等
 //给你一个整数数组 nums，和一个整数 k 。
@@ -57,19 +57,35 @@ void deal_arr(int* a, int len, int k, int min, int max) {
 			a[i] += k;
 	}
 }
-int get_Min(int* a, int len) {
-	int min = a[0];
-	for (int i = 0; i < len; i++) {
-		if (a[i] < min)
-			min = a[i];
+int get_Min(int a, int b, int c) {
+	int min = 0;
+	if (a > b) {
+		if (b > c)
+			min = c;
+		else
+			min = b;
+	}
+	else {
+		if (a > c)
+			min = c;
+		else
+			min = a;
 	}
 	return min;
 }
-int get_Max(int* a, int len) {
-	int max = a[len - 1];
-	for (int i = 0; i < len; i++) {
-		if (a[i] > max)
-			max = a[i];
+int get_Max(int a, int b, int c) {
+	int max = 0;
+	if (a > b) {
+		if (a > c)
+			max = a;
+		else
+			max = c;
+	}
+	else {
+		if (b > c)
+			max = b;
+		else
+			max = c;
 	}
 	return max;
 }
@@ -77,56 +93,9 @@ int smallestRangeII(int* nums, int numsSize, int k) {
 	CountSort(nums, numsSize);
 	int min = nums[0], max = nums[numsSize - 1];
 	int ans = max - min;
-	if (ans > k) {
-		min += k;
-		max -= k;
-		if (min > max)
-			Swap(&min, &max);
-		//处理大于等于最大值以及小于等于最小值的元素
-		int left = 0, right = 0;
-		for (int i = 0; i < numsSize; i++) {
-			if (nums[i] + k == min || nums[i] + k == max) {
-				nums[i] += k;
-				left += 1;
-			}
-			else if (nums[i] - k == max || nums[i] - k == min) {
-				nums[i] -= k;
-				right += 1;
-			}
-		}
-		//处理大于最小值，小于最大值的元素
-		for (int i = left; i < numsSize - right; i++) {
-			bool flag = false;
-			if (nums[i] - k <= min && max - nums[i] + k <= max - min) {
-				nums[i] -= k;
-				min = nums[i];
-				flag = true;
-			}
-			else if (nums[i] - k > min && max - min <= ans) {
-				nums[i] -= k;
-				flag = true;
-			}
-			if (flag) {
-				if (nums[i] + 2 * k >= max && nums[i] + 2 * k - min <= max - min) {
-					nums[i] += 2 * k;
-					max = nums[i];
-				}
-				else if (nums[i] + 2 * k < max && max - min <= ans)
-					nums[i] *= 2 * k;
-			}
-			else {
-				if (nums[i] + k >= max && nums[i] + k - min <= max - min) {
-					nums[i] += k;
-					max = nums[i];
-				}
-				else if (nums[i] * k < max && max - min <= ans)
-					nums[i] += k;
-			}
-		}
-		max = get_Max(nums, numsSize);
-		min = get_Min(nums, numsSize);
-		int tmp = max - min;
-		ans = ans < tmp ? ans : tmp;
+	for (int i = 0; i < numsSize - 1; i++) {
+		int a = nums[i], b = nums[i + 1];
+		ans = fmin(ans, fmax(max - k, a + k) - fmin(min + k, b - k));
 	}
 	return ans;
 }
