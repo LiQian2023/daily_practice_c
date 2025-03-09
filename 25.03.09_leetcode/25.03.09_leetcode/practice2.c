@@ -35,12 +35,19 @@ int Englist_Text1(int n, int k, int* real, int* fake) {
 	int count = 0;
 	int sum = 0;
 	for (int i = 0; i < n; i++) {
-		dp[i] = real[i];
+		dp[i] = real[i];//真实
 		if (real[i] < fake[i]) {
-			dp[i] = fake[i];
 			count += 1;
 			if (count > k) {
-				dp[i] /= 2;
+				if (fake[i] / 2 > real[i]) {
+					dp[i] = fake[i] / 2;//造假
+				}
+				else {
+					count -= 1;//未造假
+				}
+			}
+			else {
+				dp[i] = fake[i];//造假
 			}
 		}
 		sum += dp[i];
