@@ -1,0 +1,88 @@
+#define _CRT_SECURE_NO_WARNINGS 1
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <assert.h>
+
+//2025.05.17力扣网刷题
+//不同字符数量最多为 K 时的最少删除数——贪心、哈希表、字符串、计数、排序——简单
+//给你一个字符串 s（由小写英文字母组成）和一个整数 k。
+//你的任务是删除字符串中的一些字符（可以不删除任何字符），使得结果字符串中的 不同字符数量 最多为 k。
+//返回为达到上述目标所需删除的 最小 字符数量。
+//示例 1：
+//输入： s = "abc", k = 2
+//输出： 1
+//解释：
+//s 有三个不同的字符：'a'、'b' 和 'c'，每个字符的出现频率为 1。
+//由于最多只能有 k = 2 个不同字符，需要删除某一个字符的所有出现。
+//例如，删除所有 'c' 后，结果字符串中的不同字符数最多为 k。因此，答案是 1。
+//示例 2：
+//输入： s = "aabb", k = 2
+//输出： 0
+//解释：
+//s 有两个不同的字符（'a' 和 'b'），它们的出现频率分别为 2 和 2。
+//由于最多可以有 k = 2 个不同字符，不需要删除任何字符。因此，答案是 0。
+//示例 3：
+//输入： s = "yyyzz", k = 1
+//输出： 2
+//解释：
+//s 有两个不同的字符（'y' 和 'z'），它们的出现频率分别为 3 和 2。
+//由于最多只能有 k = 1 个不同字符，需要删除某一个字符的所有出现。
+//删除所有 'z' 后，结果字符串中的不同字符数最多为 k。因此，答案是 2。
+//提示：
+//1 <= s.length <= 16
+//1 <= k <= 16
+//s 仅由小写英文字母组成。
+typedef struct LinkNode {
+	char val;
+	int count;
+	struct LinkNode* next;
+}LN;
+void Destroy(LN** list) {
+	LN* p = (*list)->next;
+	while (p) {
+		(*list)->next = p->next;
+		p->next = NULL;
+		free(p);
+		p = (*list)->next;
+		(*list)->count -= 1;
+	}
+	free(*list);
+	*list = NULL;
+}
+int minDeletion(char* s, int k) {
+	int hash[26] = { 0 };
+	for (int i = 0; s[i]; i++) {
+		int key = s[i] - 'a';
+		hash[key] += 1;
+	}
+	LN* sort = (LN*)calloc(1, sizeof(LN));
+	assert(sort);
+	for (int i = 0; i < 26; i++) {
+		if (hash[i]) {
+			LN* p = (LN*)calloc(1, sizeof(LN));
+			assert(p);
+			p->val = i + 'a';
+			p->count = hash[i];
+			LN* q = sort;
+			LN* l = sort->next;
+			while (l && l->count < p->count) {
+				q = l;
+				l = l->next;
+			}
+			p->next = q->next;
+			q->next = p;
+			sort->count += 1;
+		}
+	}
+	int ans = 0;
+	int del = sort->count - k;
+	LN* p = sort->next;
+	for (int i = 0; i < del; i++) {
+		ans += p->count;
+		p = p->next;
+	}
+	Destroy(&sort);
+	return ans;
+}
