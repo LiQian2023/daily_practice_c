@@ -1,5 +1,4 @@
-﻿
-#define _CRT_SECURE_NO_WARNINGS 1
+﻿#define _CRT_SECURE_NO_WARNINGS 1
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,7 +7,7 @@
 
 
 //2026.01.08力扣网刷题
-//3633. 最早完成陆地和水上游乐设施的时间 I——贪心、数组、双指针、二分查找、排序、第162场双周赛——简单
+//3635. 最早完成陆地和水上游乐设施的时间 II——贪心、数组、双指针、二分查找、排序、第162场双周赛——简单
 //给你两种类别的游乐园项目：陆地游乐设施 和 水上游乐设施。
 //陆地游乐设施
 //landStartTime[i] – 第 i 个陆地游乐设施最早可以开始的时间。
@@ -50,10 +49,10 @@
 //水上游乐设施 0 在 waterStartTime[0] = 1 开放。立即在时间 8 开始，在 8 + waterDuration[0] = 18 结束。
 //方案 A 提供了最早的结束时间 14。​​​​​​​
 //提示:
-//1 <= n, m <= 100
+//1 <= n, m <= 5 * 10^4
 //landStartTime.length == landDuration.length == n
 //waterStartTime.length == waterDuration.length == m
-//1 <= landStartTime[i], landDuration[i], waterStartTime[j], waterDuration[j] <= 1000
+//1 <= landStartTime[i], landDuration[i], waterStartTime[j], waterDuration[j] <= 10^5
 
 int Get_Min(int* first, int* firstDuration, int n, int* second, int* secondDuration, int m) {
 	int start = first[0] + firstDuration[0];
