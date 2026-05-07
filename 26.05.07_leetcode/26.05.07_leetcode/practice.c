@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+
+//2026.05.07力扣网刷题
+//3917. 统计下标的相反奇偶性得分——中级工程师、第500场周赛——简单
+//给你一个长度为 n 的整数数组 nums。
+//下标 i 的 分数 定义为满足以下条件的下标 j 的数量：
+//i < j < n，并且
+//nums[i] 和 nums[j] 的奇偶性不同（一个为偶数，另一个为奇数）。
+//返回一个长度为 n 的整数数组 answer，其中 answer[i] 表示下标 i 的分数。
+//示例 1：
+//输入： nums = [1, 2, 3, 4]
+//输出：[2, 1, 1, 0]
+//解释：
+//nums[0] = 1，为奇数。因此，下标 j = 1 和 j = 3 满足条件，所以下标 0 的分数为 2。
+//nums[1] = 2，为偶数。因此，下标 j = 2 满足条件，所以下标 1 的分数为 1。
+//nums[2] = 3，为奇数。因此，下标 j = 3 满足条件，所以下标 2 的分数为 1。
+//nums[3] = 4，为偶数。因此，没有下标满足条件，所以下标 3 的分数为 0。
+//因此，answer = [2, 1, 1, 0]。
+//示例 2：
+//输入： nums = [1]
+//输出：[0]
+//解释：
+//nums 中只有一个元素。因此，下标 0 的分数为 0。
+//提示：
+//1 <= nums.length <= 100
+//1 <= nums[i] <= 100
+
+int* countOppositeParity(int* nums, int numsSize, int* returnSize) {
+	*returnSize = numsSize;
+	int* ans = (int*)calloc(numsSize, sizeof(int));
+	assert(ans);
+	int count[2] = { 0, 0 };
+	for (int i = 0; i < numsSize; i++) {
+		count[nums[i] % 2] += 1;
+	}
+	for (int i = 0; i < numsSize; i++) {
+		int key = nums[i] % 2;
+		ans[i] = count[(key + 1) % 2];
+		count[key] -= 1;
+	}
+	return ans;
+}
