@@ -26,30 +26,28 @@ struct TreeNode {
 	struct TreeNode* right;
 };
 typedef struct TreeNode TN;
-void visited(TN* root, TN** ans, TN** tail) {
-	root->left = NULL;
-	if (!(*ans)) {
-		(*ans) = root;
-		(*tail) = (*ans);
+void visited(TN* node, TN** pre, TN** newRoot) {
+	if (!(*newRoot)) {
+		*newRoot = node;
 	}
-	else {
-		(*tail)->left = NULL;
-		(*tail)->right = root;
-		(*tail) = (*tail)->right;
+	if (*pre) {
+		(*pre)->right = node;
 	}
+	node->left = NULL;
+	(*pre) = node;
 }
-void dfs(TN* root, TN** ans, TN** tail) {
-	if (!root) {
+void dfs(TN* node, TN** pre, TN** newRoot) {
+	if (!node) {
 		return;
 	}
-	dfs(root->left, ans, tail);
-	visited(root, ans, tail);
-	dfs(root->right, ans, tail);
+	dfs(node->left, pre, newRoot);
+	visited(node, pre, newRoot);
+	dfs(node->right, pre, newRoot);
+
 }
 struct TreeNode* increasingBST(struct TreeNode* root) {
-	TN* p = root;
-	TN* ans = NULL;
-	TN* tail = NULL;
-	dfs(root, &ans, &tail);
-	return ans;
+	TN* pre = NULL;
+	TN* newRoot = NULL;
+	dfs(root, &pre, &newRoot);
+	return newRoot;
 }
