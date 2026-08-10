@@ -34,22 +34,24 @@ int maxArea(int* height, int heightSize) {
 	return ans;
 }
 
-// 方法二：
+// 方法二：双指针
 int maxArea(int* height, int heightSize) {
-	int mid = heightSize / 2;
-	int left = mid, right = mid;
-	if (heightSize % 2 == 0) {
-		left -= 1;
-	}
-	for (int i = left, j = right; i >= 0 && j < heightSize; i--, j++) {
-		if (height[i] > height[left] || (left - i > height[left] - height[i])) {
-			left = i;
+	int l = 0, r = heightSize - 1;
+	int w = r - l, h = height[l] < height[r] ? height[l] : height[r];
+	int area = w * h;
+	for (int i = l, j = r; i < j;) {
+		w = j - i;
+		h = height[i] < height[j] ? height[i] : height[j];
+		int tmp = w * h;
+		if (tmp > area) {
+			area = tmp;
 		}
-		if (height[j] > height[right]|| (j - right > height[right] - height[j])) {
-			right = j;
+		if (height[j] > height[i]) {
+			i += 1;
+		}
+		else {
+			j -= 1;
 		}
 	}
-	int w = right - left;
-	int h = height[left] < height[right] ? height[left] : height[right];
-	return w * h;
+	return area;
 }
