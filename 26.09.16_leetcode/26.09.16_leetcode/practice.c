@@ -62,3 +62,40 @@ int countSpecialIntegers(int* nums, int numsSize) {
 	}
 	return ans;
 }
+
+int countSpecialIntegers(int* nums, int numsSize) {
+	int** hash = (int**)calloc(101, sizeof(int*));
+	assert(hash);
+	for (int i = 0; i < 101; i++) {
+		hash[i] = (int*)calloc(4, sizeof(int));
+		assert(hash[i]);
+	}
+	int min = nums[0], max = nums[0];
+	for (int i = 0; i < numsSize; i++) {
+		int key = nums[i];
+		if (key > max) {
+			max = key;
+		}
+		else if (key < min) {
+			min = key;
+		}
+		int top = hash[key][0];
+		if (top < 3) {
+			hash[key][top + 1] = i;
+		}
+		hash[key][0] += 1;
+	}
+	int ans = 0;
+	for (int i = min; i <= max; i++) {
+		int top = hash[i][0];
+		int a = hash[i][1], b = hash[i][2], c = hash[i][3];
+		if (top == 3 && b - a == c - b) {
+			ans += 1;
+		}
+	}
+	for (int i = 0; i < 101; i++) {
+		free(hash[i]);
+	}
+	free(hash);
+	return ans;
+}
