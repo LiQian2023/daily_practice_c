@@ -25,7 +25,8 @@
 //board 和 word 仅由大小写英文字母组成
 //进阶：你可以使用搜索剪枝的技术来优化解决方案，使其在 board 更大的情况下可以更快解决问题？
 
-bool dfs(char** board, int row, int* col, char* word, int x, int y, int z, bool** visited, int* move) {
+// 方法一：回溯
+bool dfs1(char** board, int row, int* col, char* word, int x, int y, int z, bool** visited, int* move) {
 	if (!word[z]) {
 		return true;
 	}
@@ -42,7 +43,31 @@ bool dfs(char** board, int row, int* col, char* word, int x, int y, int z, bool*
 	bool res = false;
 	visited[x][y] = true;
 	for (int x_ = 0, y_ = 1; y_ < 8; x_ += 2, y_ += 2) {
-		res |= dfs(board, row, col, word, x + move[x_], y + move[y_], z + 1, visited, move);
+		res |= dfs1(board, row, col, word, x + move[x_], y + move[y_], z + 1, visited, move);
+	}
+	visited[x][y] = false;
+	return res;
+}
+
+// 方法二：回溯 + 剪枝优化
+bool dfs(char** board, int row, int* col, char* word, int x, int y, int z, bool** visited, int* move) {
+	if (!word[z]) {
+		return true;
+	}
+	if (x >= row || x < 0 || y >= col[x] || y < 0) {
+		return false;
+	}
+
+	if (board[x][y] != word[z]) {
+		return false;
+	}
+	if (visited[x][y]) {
+		return false;
+	}
+	visited[x][y] = true;
+	bool res = false;
+	for (int x_ = 0, y_ = 1; !res && y_ < 8; x_ += 2, y_ += 2) {
+		res = dfs(board, row, col, word, x + move[x_], y + move[y_], z + 1, visited, move);
 	}
 	visited[x][y] = false;
 	return res;
@@ -57,10 +82,10 @@ bool exist(char** board, int boardSize, int* boardColSize, char* word) {
 	}
 	bool ans = false;
 	int move[8] = { 0, 1, 0, -1, 1, 0, -1, 0 };
-	for (int i = 0; i < boardSize; i++) {
-		for (int j = 0; j < boardColSize[i]; j++) {
+	for (int i = 0; !ans && i < boardSize; i++) {
+		for (int j = 0; !ans && j < boardColSize[i]; j++) {
 			if (board[i][j] == word[0]) {
-				ans |= dfs(board, boardSize, boardColSize, word, i, j, 0, visited, move);
+				ans = dfs(board, boardSize, boardColSize, word, i, j, 0, visited, move);
 			}
 		}
 	}
