@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <math.h>
 
 //2026.11.23力扣网刷题
 //LCR 102. 目标和——数组、动态规划、回溯——中等
@@ -27,7 +28,7 @@
 //- 1000 <= target <= 1000
 //注意：本题与主站 494 题相同： https ://leetcode.cn/problems/target-sum/
 
-void backTrack(int* nums, int len, int target, int sum, int begin, int* ans) {
+void backTrack1(int* nums, int len, int target, int sum, int begin, int* ans) {
 	if (begin == len) {
 		if (sum == target) {
 			*ans += 1;
@@ -38,7 +39,7 @@ void backTrack(int* nums, int len, int target, int sum, int begin, int* ans) {
 	backTrack(nums, len, target, sum - nums[begin], begin + 1, ans);
 }
 
-int findTargetSumWays(int* nums, int numsSize, int target) {
+int findTargetSumWays1(int* nums, int numsSize, int target) {
 	int ans = 0;
 	backTrack(nums, numsSize, target, 0, 0, &ans);
 	return ans;
