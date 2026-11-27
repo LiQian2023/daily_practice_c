@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <string.h>
+
+//2026.11.28力扣网刷题
+//4116. 下雨天安排伞——中级工程师、第196场双周赛——简单
+//给你一个长度为 n 的 二进制数组 rain，其中 rain[i] == 1 表示第 i 天下雨，rain[i] == 0 表示第 i 天不下雨。
+//Alice 和 Bob 在这 n 天里共用 一把伞。在每一天 i：
+//对于 0 <= i < n - 1，如果 rain[i] == rain[i + 1] == 1，则 Alice 在第 i 天需要伞。
+//如果 rain[i] == 1，则 Bob 需要伞。
+//他们之中 至多一人 可以得到伞。
+//如果只有一个人需要伞，则由这个人得到伞。
+//如果 两人 都需要伞，则伞归目前为止得到伞次数 较少 的人。如果次数 相同，则伞归 Alice。
+//如果两人都不需要伞，则没有人得到伞。
+//一个人的计数只有在其得到伞的那一天才会 增加。初始时，两人的计数均为 0。
+//返回一个长度为 n 的字符串数组 answer，其中 answer[i] 为 "Alice"、"Bob" 或 "None"，表示第 i 天得到伞的人。
+//二进制数组 是只包含 0 和 1 的数组。
+//示例 1：
+//输入： rain = [1, 1, 0, 1, 1]
+//输出：["Alice", "Bob", "None", "Alice", "Bob"]
+//解释：
+//第 0 天：rain[0] == 1 且 rain[1] == 1，所以两人都需要伞。计数相同，所以 Alice 得到伞。
+//第 1 天：rain[1] == 1，所以 Bob 需要伞，但 rain[2] == 0，所以 Alice 不需要伞。因此 Bob 得到伞。
+//第 2 天：没有下雨，所以没有人得到伞。
+//第 3 天：rain[3] == 1 且 rain[4] == 1，所以两人都需要伞。计数均为 1，相同，所以 Alice 得到伞。
+//第 4 天：最后一天，所以只有 Bob 需要伞，由他得到伞。
+//因此，answer = ["Alice", "Bob", "None", "Alice", "Bob"]。
+//示例 2：
+//输入： rain = [0, 1, 0, 1]
+//输出：["None", "Bob", "None", "Bob"]
+//解释：
+//从未出现连续两天下雨的情况，所以 Alice 从不需要伞。
+//Bob 在第 1 天和第 3 天得到伞，第 0 天和第 2 天没有人得到伞。
+//因此，answer = ["None", "Bob", "None", "Bob"]。
+//提示：
+//1 <= n == rain.length <= 100
+//rain[i] 为 0 或 1。
+
+char** assignUmbrella(int* rain, int rainSize, int* returnSize) {
+	char** ans = (char**)calloc(rainSize, sizeof(char*));
+	assert(ans);
+	int a = 0, b = 0;
+	*returnSize = 0;
+	for (int i = 0; i < rainSize; i++) {
+		if (i + 1 < rainSize && rain[i] == rain[i + 1] && rain[i] == 1 && a <= b) {
+			ans[*returnSize] = (char*)calloc(6, sizeof(char));
+			assert(ans[*returnSize]);
+			memcpy(ans[*returnSize], "Alice", 5 * sizeof(char));
+			a += 1;
+		}
+		else if (rain[i] == 1 && ((i + 1 < rainSize && !rain[i + 1]) || (i + 1 == rainSize))) {
+			ans[*returnSize] = (char*)calloc(4, sizeof(char));
+			assert(ans[*returnSize]);
+			memcpy(ans[*returnSize], "Bob", 3 * sizeof(char));
+			b += 1;
+		}
+		else if (!rain[i]) {
+			ans[*returnSize] = (char*)calloc(5, sizeof(char));
+			assert(ans[*returnSize]);
+			memcpy(ans[*returnSize], "None", 4 * sizeof(char));
+		}
+		else if (i + 1 < rainSize && rain[i] == rain[i + 1] && rain[i] == 1 && a > b) {
+			ans[*returnSize] = (char*)calloc(4, sizeof(char));
+			assert(ans[*returnSize]);
+			memcpy(ans[*returnSize], "Bob", 3 * sizeof(char));
+			b += 1;
+		}
+		*returnSize += 1;
+	}
+	return ans;
+}
